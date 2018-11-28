@@ -9,9 +9,9 @@
     "express": "^4.16.4"
   },
   "scripts": {
-    "start": "NODE_ENV=development webpack -w --mode development & NODE_ENV=development node server.js",
+    "start": "NODE_ENV=development REACT_APP_ENV=development webpack -w --mode development & NODE_ENV=development node server.js",
     "xstart": "react-scripts start",
-    "build": "react-scripts build",
+    "build": " REACT_APP_ENV=development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -33,7 +33,6 @@
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "0.4.4",
     "postcss-loader": "^3.0.0",
-    "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
   }
 }

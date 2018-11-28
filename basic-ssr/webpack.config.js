@@ -8,7 +8,7 @@ const browserConfig = {
     entry: "./src/browser/index.js",
     output: {
         path: __dirname,
-        filename: "./public/bundle.js"
+        filename: "./public_ssr/bundle.js"
     },
     devtool: "cheap-module-source-map",
     module: {
@@ -17,8 +17,8 @@ const browserConfig = {
                 test: [/\.svg$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
                 loader: "file-loader",
                 options: {
-                    name: "public/media/[name].[ext]",
-                    publicPath: url => url.replace(/public/, "")
+                    name: "public_ssr/media/[name].[ext]",
+                    publicPath: url => url.replace(/public_ssr/, "")
                 }
             },
             {
@@ -52,8 +52,9 @@ const browserConfig = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "public/css/[name].css"
-        })
+            filename: "public_ssr/css/[name].css"
+        }),
+        new webpack.DefinePlugin({ 'process.env': Object.keys(process.env).reduce(function (o, k) { o[k] = JSON.stringify(process.env[k]); return o; }, {}) })
     ]
 };
 
@@ -75,8 +76,8 @@ const serverConfig = {
                 test: [/\.svg$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
                 loader: "file-loader",
                 options: {
-                    name: "public/media/[name].[ext]",
-                    publicPath: url => url.replace(/public/, ""),
+                    name: "public_ssr/media/[name].[ext]",
+                    publicPath: url => url.replace(/public_ssr/, ""),
                     emit: false
                 }
             },
@@ -95,7 +96,10 @@ const serverConfig = {
                 query: { presets: ["react-app"] }
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({ 'process.env': Object.keys(process.env).reduce(function (o, k) { o[k] = JSON.stringify(process.env[k]); return o; }, {}) })
+    ]
 };
 
 module.exports = [browserConfig, serverConfig];
